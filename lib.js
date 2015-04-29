@@ -26,7 +26,6 @@ var animateInitialElements = function(tplName, animations) {
         var timeout = attrs.animateInitialStep * i || 0;
         element.hide();
         Meteor.setTimeout(function() {
-          element.show();
           animateIn(attrs.in, element);
         }, timeout);
       });
