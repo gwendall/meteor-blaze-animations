@@ -9,9 +9,9 @@ var getUiHooks = function(animations) {
       container: attrs.container,
       insert: function(node, next) {
         var $node = $(node);
-        $node.removeClass(attrs.in).insertBefore(next);
+        $node.removeClass(attrs.in).insertBefore(next).css({ opacity: 0 });
         Tracker.afterFlush(function() {
-          $node.addClass(attrs.in);
+          $node.css({ opacity: 1 }).addClass(attrs.in);
         });
       },
       remove: function(node) {

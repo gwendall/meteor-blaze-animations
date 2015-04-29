@@ -1,7 +1,8 @@
 Meteor Template Animations
 ==========================
 
-A simple API to animate DOM elements with Meteor
+A simple API to animate DOM elements with Meteor.  
+[Demo](http://template-animations.meteor.com)
 
 Installation  
 ------------
@@ -13,7 +14,8 @@ meteor add gwendall:template-animations
 Details
 -------
 
-This package dynamically sets classes to a DOM element whenever it gets inserted or removed from the DOM.
+This package dynamically sets classes to DOM elements whenever they get inserted or removed.  
+Based on another [simple wrapper for uihooks](http://github.com/gwendall/meteor-ui-hooks).
 
 
 Example
