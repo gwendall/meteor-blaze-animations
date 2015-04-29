@@ -17,8 +17,8 @@ var getUiHooks = function(animations) {
       },
       remove: function(node) {
         var $node = $(node);
-        $node.removeClass(attrs.in).addClass(attrs.out);
         if (!attrs.out) return $node.remove();
+        $node.removeClass(attrs.in).addClass(attrs.out);
         $node.onAnimationEnd(function(animationName) {
           $node.remove();
         });
