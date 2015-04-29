@@ -9,9 +9,10 @@ var getUiHooks = function(animations) {
       container: attrs.container,
       insert: function(node, next) {
         var $node = $(node);
+        var opacity = $node.css("opacity") || 1; // Set the opacity to 0 before inserting the element to avoid a flickering when applying the "in" class
         $node.removeClass(attrs.in).insertBefore(next).css({ opacity: 0 });
         Tracker.afterFlush(function() {
-          $node.css({ opacity: 1 }).addClass(attrs.in);
+          $node.css({ opacity: opacity }).addClass(attrs.in);
         });
       },
       remove: function(node) {
