@@ -27,7 +27,9 @@ Template.layout.animations({
   ".item": {
     container: ".container", // container of the ".item" elements
     in: "fade-in", // class applied to inserted elements
-    out: "fade-out" // class applied to removed elements
+    out: "fade-out", // class applied to removed elements
+    animateInitial: true, // animate the elements already rendered
+    animateInitialStep: 200 // Step between each animation for each initial item
   }
 });
 ```
