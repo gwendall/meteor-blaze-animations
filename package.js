@@ -1,6 +1,6 @@
 Package.describe({
   name: "gwendall:template-animations",
-  summary: "Simple DOM animations with Blaze",
+  summary: "Simple DOM animations for Meteor",
   git: "https://github.com/gwendall/meteor-template-animations.git",
   version: "0.1.0"
 });
