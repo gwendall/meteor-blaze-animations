@@ -49,3 +49,33 @@ Template.layout.helpers({
   </div>
 </template>
 ```
+
+``` css
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }  
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }  
+}
+
+.fade-in {
+  animation-name: fadeIn;
+  animation-duration: .3s;
+}
+
+.fade-out {
+  animation-name: fadeOut;
+  animation-duration: .3s;
+}
+```
