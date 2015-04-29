@@ -20,8 +20,9 @@ var animateOut = function(classOut, element) {
 }
 
 var animateInitialElements = function(tplName, animations) {
+  if (!tplName || !animations) return;
   _.each(animations, function(attrs, selector) {
-    if (!tplName || !animations || !attrs.animateInitial) return;
+    if (!attrs.animateInitial) return;
     Template[tplName].onRendered(function() {
       $(selector, attrs.container).each(function(i) {
         var element = $(this);
