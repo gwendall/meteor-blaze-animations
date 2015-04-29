@@ -3,6 +3,7 @@ var getTplName = function(tpl) {
 }
 
 var animateIn = function(classIn, element) {
+  if (!classIn || !element) return;
   // Hide the element before inserting to avoid a flickering when applying the "in" class
   element.hide().removeClass(classIn);
   Tracker.afterFlush(function() {
@@ -11,6 +12,7 @@ var animateIn = function(classIn, element) {
 }
 
 var animateOut = function(classOut, element) {
+  if (!classOut || !element) return;
   element.addClass(classOut);
   element.onAnimationEnd(function(animationName) {
     element.remove();
@@ -19,7 +21,7 @@ var animateOut = function(classOut, element) {
 
 var animateInitialElements = function(tplName, animations) {
   _.each(animations, function(attrs, selector) {
-    if (!attrs.animateInitial) return;
+    if (!tplName || !animations || !attrs.animateInitial) return;
     Template[tplName].onRendered(function() {
       $(selector, attrs.container).each(function(i) {
         var element = $(this);
