@@ -61,8 +61,7 @@ var getUiHooks = function(animations) {
 }
 
 Template.prototype.animations = function(animations) {
-  var tpl = this;
-  var tplName = getTplName(tpl);
+  var tplName = getTplName(this);
   var hooks = getUiHooks(animations);
   Template[tplName].uihooks(hooks);
   animateInitialElements(tplName, animations);
