@@ -31,7 +31,7 @@ Template.layout.animations({
     delayIn: 500, // Delay before inserted items animate
     delayOut: 500, // Delay before removed items animate
     animateInitial: true, // animate the elements already rendered
-    animateInitialStep: 200, // Step between each animation for each initial item
+    animateInitialStep: 200, // Step between animations for each initial item
     animateInitialDelay: 500 // Delay before the initial items animate
   }
 });
