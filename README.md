@@ -37,6 +37,6 @@ Template.layout.animations({
 });
 ```
 
-That's it. All ``.item`` elements inserted in the ``.container`` element will be applied a ``fade-in`` class on insert, and a ``fade-out`` class before being removed from the DOM.  
+That's it. All ``.item`` elements that are direct children of the ``.container`` element will be applied a ``fade-in`` class on insert, and a ``fade-out`` class before being removed from the DOM.  
 
 See the [demo](http://github.com/gwendall/meteor-template-animations-demo) code for a complete example.
