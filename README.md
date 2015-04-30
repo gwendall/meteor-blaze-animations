@@ -28,64 +28,15 @@ Template.layout.animations({
     container: ".container", // container of the ".item" elements
     in: "fade-in", // class applied to inserted elements
     out: "fade-out", // class applied to removed elements
+    delayIn: 500 // Delay before inserted items animate
+    delayOut: 500 // Delay before removed items animate
     animateInitial: true, // animate the elements already rendered
     animateInitialStep: 200 // Step between each animation for each initial item
+    animateInitialDelay: 500 // Delay before the initial items animate
   }
 });
 ```
 
 That's it. All ``.item`` elements inserted in the ``.container`` element will be applied a ``fade-in`` class on insert, and a ``fade-out`` class before being removed from the DOM.  
 
-Some more code, should you need to see a full example:
-
-``` javascript
-Items = new Mongo.Collection("items");
-Items.insert({ title: "foo" });
-
-Template.layout.helpers({
-  items: function() {
-    return Items.find();
-  }
-});
-
-```
-
-``` html
-<template name="layout">
-  <div class="container">
-    {{#each items}}
-      <div class="item">{{title}}</div>
-    {{/each}}
-  </div>
-</template>
-```
-
-``` css
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }  
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }  
-}
-
-.fade-in {
-  animation-name: fadeIn;
-  animation-duration: .3s;
-}
-
-.fade-out {
-  animation-name: fadeOut;
-  animation-duration: .3s;
-}
-```
+See the [demo](http://github.com/gwendall/meteor-template-animations-demo) code for a complete example.
