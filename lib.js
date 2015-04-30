@@ -45,15 +45,15 @@ var getUiHooks = function(animations) {
     hooks[selector] = {
       container: attrs.container,
       insert: function(node, next) {
-        var $node = $(node);
-        $node.insertBefore(next);
-        animateIn(attrs.in, $node);
+        var element = $(node);
+        element.insertBefore(next);
+        animateIn(attrs.in, element);
       },
       remove: function(node) {
-        var $node = $(node);
-        if (!attrs.out) return $node.remove();
-        $node.removeClass(attrs.in);
-        animateOut(attrs.out, $node);
+        var element = $(node);
+        if (!attrs.out) return element.remove();
+        element.removeClass(attrs.in);
+        animateOut(attrs.out, element);
       }
     }
   });
