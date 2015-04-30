@@ -28,10 +28,10 @@ Template.layout.animations({
     container: ".container", // container of the ".item" elements
     in: "fade-in", // class applied to inserted elements
     out: "fade-out", // class applied to removed elements
-    delayIn: 500 // Delay before inserted items animate
-    delayOut: 500 // Delay before removed items animate
+    delayIn: 500, // Delay before inserted items animate
+    delayOut: 500, // Delay before removed items animate
     animateInitial: true, // animate the elements already rendered
-    animateInitialStep: 200 // Step between each animation for each initial item
+    animateInitialStep: 200, // Step between each animation for each initial item
     animateInitialDelay: 500 // Delay before the initial items animate
   }
 });
