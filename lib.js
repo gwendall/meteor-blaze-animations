@@ -5,9 +5,11 @@ var getTplName = function(tpl) {
 var animateIn = function(classIn, element) {
   if (!classIn || !element) return;
   // Hide the element before inserting to avoid a flickering when applying the "in" class
-  element.hide().removeClass(classIn);
+  element._opacity = element._opacity || element.css("opacity") || 0;
+  element.css({ opacity: 0 });
+  element.removeClass(classIn);
   Tracker.afterFlush(function() {
-    element.show().addClass(classIn);
+    element.css({ opacity: element._opacity }).addClass(classIn);
   });
 }
 
@@ -27,7 +29,8 @@ var animateInitialElements = function(tplName, animations) {
       $(selector, attrs.container).each(function(i) {
         var element = $(this);
         var timeout = attrs.animateInitialStep * i || 0;
-        element.hide();
+        element._opacity = element.css("opacity");
+        element.css({ opacity: 0 });
         Meteor.setTimeout(function() {
           animateIn(attrs.in, element);
         }, timeout);
