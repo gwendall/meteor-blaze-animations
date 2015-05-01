@@ -10,7 +10,7 @@ var animateIn = function(attrs, element) {
   element.removeClass(attrs.in);
   var delayIn = attrs.delayIn || 0;
   Tracker.afterFlush(function() {
-    Meteor.setTimeout(function() {
+    setTimeout(function() {
       element.css({ opacity: element._opacity }).addClass(attrs.in);
     }, delayIn);
   });
@@ -19,7 +19,7 @@ var animateIn = function(attrs, element) {
 var animateOut = function(attrs, element) {
   if (!attrs || !element) return;
   var delayOut = attrs.delayOut || 0;
-  Meteor.setTimeout(function() {
+  setTimeout(function() {
     element.removeClass(attrs.in).addClass(attrs.out);
   }, delayOut);
   element.onAnimationEnd(function(animationName) {
@@ -39,7 +39,7 @@ var animateInitialElements = function(tplName, animations) {
         var delay = animateInitialDelay + animateInitialStep;
         element._opacity = element.css("opacity");
         element.css({ opacity: 0 });
-        Meteor.setTimeout(function() {
+        setTimeout(function() {
           animateIn(attrs, element);
         }, delay);
       });
