@@ -4,7 +4,7 @@ var getTplName = function(tpl) {
 
 var animateIn = function(attrs, element, tpl) {
   if (!attrs || !element) return;
-  var classIn = _.isFunction(attrs.in) ? attrs.in.apply(this, [element, tpl]) : attrs.in;
+  var classIn = _.isFunction(attrs.in) ? attrs.in.apply(this, [element.get(0), tpl]) : attrs.in;
   // Hide the element before inserting to avoid a flickering when applying the "in" class
   element._opacity = element._opacity || element.css("opacity") || 0;
   element.css({ opacity: 0 });
@@ -19,8 +19,8 @@ var animateIn = function(attrs, element, tpl) {
 
 var animateOut = function(attrs, element, tpl) {
   if (!attrs || !element) return;
-  var classIn = _.isFunction(attrs.in) ? attrs.in.apply(this, [element, tpl]) : attrs.in;
-  var classOut = _.isFunction(attrs.out) ? attrs.out.apply(this, [element, tpl]) : attrs.out;
+  var classIn = _.isFunction(attrs.in) ? attrs.in.apply(this, [element.get(0), tpl]) : attrs.in;
+  var classOut = _.isFunction(attrs.out) ? attrs.out.apply(this, [element.get(0), tpl]) : attrs.out;
   var delayOut = attrs.delayOut || 0;
   setTimeout(function() {
     element.removeClass(classIn).addClass(classOut);

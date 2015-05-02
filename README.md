@@ -38,7 +38,10 @@ Template.layout.animations({
 
 That's it. All ``.item`` elements that are direct children of the ``.container`` element will be applied a ``fade-in`` class on insert, and a ``fade-out`` class before being removed from the DOM.  
 
-Update: you can dynamically set the ``in`` and ``out`` animations by passing a function as a parameter.  
+See the [demo](http://github.com/gwendall/meteor-template-animations-demo) code for a complete example.  
+
+Update: you can dynamically transform the inserted elements and set their ``in`` and ``out`` animations by passing a function returning the desired class(es).  
+
 ``` javascript
 Template.layout.animations({
   ".item": {
@@ -51,5 +54,3 @@ Template.layout.animations({
   }
 });
 ```
-
-See the [demo](http://github.com/gwendall/meteor-template-animations-demo) code for a complete example.
