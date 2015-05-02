@@ -2,25 +2,28 @@ var getTplName = function(tpl) {
   return tpl.viewName.slice(-(tpl.viewName.length - "Template.".length));
 }
 
-var animateIn = function(attrs, element) {
+var animateIn = function(attrs, element, tpl) {
   if (!attrs || !element) return;
+  var classIn = _.isFunction(attrs.in) ? attrs.in.apply(this, [element, tpl]) : attrs.in;
   // Hide the element before inserting to avoid a flickering when applying the "in" class
   element._opacity = element._opacity || element.css("opacity") || 0;
   element.css({ opacity: 0 });
-  element.removeClass(attrs.in);
+  element.removeClass(classIn);
   var delayIn = attrs.delayIn || 0;
   Tracker.afterFlush(function() {
     setTimeout(function() {
-      element.css({ opacity: element._opacity }).addClass(attrs.in);
+      element.css({ opacity: element._opacity }).addClass(classIn);
     }, delayIn);
   });
 }
 
-var animateOut = function(attrs, element) {
+var animateOut = function(attrs, element, tpl) {
   if (!attrs || !element) return;
+  var classIn = _.isFunction(attrs.in) ? attrs.in.apply(this, [element, tpl]) : attrs.in;
+  var classOut = _.isFunction(attrs.out) ? attrs.out.apply(this, [element, tpl]) : attrs.out;
   var delayOut = attrs.delayOut || 0;
   setTimeout(function() {
-    element.removeClass(attrs.in).addClass(attrs.out);
+    element.removeClass(classIn).addClass(classOut);
   }, delayOut);
   element.onAnimationEnd(function(animationName) {
     element.remove();
@@ -47,7 +50,7 @@ var animateInitialElements = function(tplName, animations) {
   });
 }
 
-var getUiHooks = function(animations) {
+var getUiHooks = function(animations, tpl) {
   var hooks = {};
   _.each(animations, function(attrs, selector) {
     hooks[selector] = {
@@ -55,13 +58,12 @@ var getUiHooks = function(animations) {
       insert: function(node, next) {
         var element = $(node);
         element.insertBefore(next);
-        animateIn(attrs, element);
+        animateIn(attrs, element, tpl);
       },
       remove: function(node) {
         var element = $(node);
         if (!attrs.out) return element.remove();
-        element.removeClass(attrs.in);
-        animateOut(attrs, element);
+        animateOut(attrs, element, tpl);
       }
     }
   });
@@ -70,7 +72,7 @@ var getUiHooks = function(animations) {
 
 Template.prototype.animations = function(animations) {
   var tplName = getTplName(this);
-  var hooks = getUiHooks(animations);
+  var hooks = getUiHooks(animations, this);
   Template[tplName].uihooks(hooks);
   animateInitialElements(tplName, animations);
 };

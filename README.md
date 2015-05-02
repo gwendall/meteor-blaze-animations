@@ -22,7 +22,6 @@ Example
 -------  
 
 ``` javascript
-
 Template.layout.animations({
   ".item": {
     container: ".container", // container of the ".item" elements
@@ -38,5 +37,19 @@ Template.layout.animations({
 ```
 
 That's it. All ``.item`` elements that are direct children of the ``.container`` element will be applied a ``fade-in`` class on insert, and a ``fade-out`` class before being removed from the DOM.  
+
+Update: you can dynamically set the ``in`` and ``out`` animations by passing a function as a parameter.  
+``` javascript
+Template.layout.animations({
+  ".item": {
+    container: ".container", // container of the ".item" elements
+    in: function(element, tpl) {
+      // element is the element being animated
+      // tpl is the template instance
+      return "fade-in";
+    }
+  }
+});
+```
 
 See the [demo](http://github.com/gwendall/meteor-template-animations-demo) code for a complete example.
