@@ -2,7 +2,7 @@ Package.describe({
   name: "gwendall:template-animations",
   summary: "Simple DOM animations for Meteor",
   git: "https://github.com/gwendall/meteor-template-animations.git",
-  version: "0.1.9"
+  version: "0.1.9_1"
 });
 
 Package.onUse(function (api, where) {
@@ -13,7 +13,7 @@ Package.onUse(function (api, where) {
     "jquery@1.11.3_2",
     "tracker@1.0.7",
     "gwendall:ui-hooks@0.1.4",
-    "gwendall:jquery-animation-callback@0.1.0"
+    "gwendall:jquery-animation-callback@0.1.1"
   ], "client");
 
   api.addFiles([

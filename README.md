@@ -27,6 +27,8 @@ Template.layout.animations({
     container: ".container", // container of the ".item" elements
     in: "fade-in", // class applied to inserted elements
     out: "fade-out", // class applied to removed elements
+    inCallback: function(element) {}, // callback after an element gets inserted
+    outCallback: function(element) {}, // callback after an element gets removed
     delayIn: 500, // Delay before inserted items animate
     delayOut: 500, // Delay before removed items animate
     animateInitial: true, // animate the elements already rendered
@@ -40,7 +42,7 @@ That's it. All ``.item`` elements that are direct children of the ``.container``
 
 See the [demo](http://github.com/gwendall/meteor-template-animations-demo) code for a complete example.  
 
-Update: you can dynamically transform the inserted elements and set their ``in`` and ``out`` animations by passing a function returning the desired class(es).  
+Note: you can dynamically transform the inserted elements and set their ``in`` and ``out`` animations by passing a function returning the desired class(es).  
 
 ``` javascript
 Template.layout.animations({
