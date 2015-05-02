@@ -12,7 +12,7 @@ Package.onUse(function (api, where) {
     "templating@1.1.1",
     "jquery@1.11.3_2",
     "tracker@1.0.7",
-    "gwendall:ui-hooks@0.1.3",
+    "gwendall:ui-hooks@0.1.4",
     "gwendall:jquery-animation-callback@0.1.0"
   ], "client");
 

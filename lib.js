@@ -50,17 +50,17 @@ var animateInitialElements = function(tplName, animations) {
   });
 }
 
-var getUiHooks = function(animations, tpl) {
+var getUiHooks = function(animations) {
   var hooks = {};
   _.each(animations, function(attrs, selector) {
     hooks[selector] = {
       container: attrs.container,
-      insert: function(node, next) {
+      insert: function(node, next, tpl) {
         var element = $(node);
         element.insertBefore(next);
         animateIn(attrs, element, tpl);
       },
-      remove: function(node) {
+      remove: function(node, tpl) {
         var element = $(node);
         if (!attrs.out) return element.remove();
         animateOut(attrs, element, tpl);
@@ -72,7 +72,7 @@ var getUiHooks = function(animations, tpl) {
 
 Template.prototype.animations = function(animations) {
   var tplName = getTplName(this);
-  var hooks = getUiHooks(animations, this);
+  var hooks = getUiHooks(animations);
   Template[tplName].uihooks(hooks);
   animateInitialElements(tplName, animations);
 };
