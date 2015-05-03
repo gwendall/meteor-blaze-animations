@@ -45,7 +45,7 @@ var attachAnimationCallbacks = function(attrs, selector, tpl) {
   if (callbacks[s]) return;
   callbacks[s] = true;
 
-  $(s).onAnimationEnd(function(animationName) {
+  $(s).onAnimationOrTransitionEnd(function() {
 
     var element = $(this);
 

@@ -13,7 +13,7 @@ Package.onUse(function (api, where) {
     "jquery@1.11.3_2",
     "tracker@1.0.7",
     "gwendall:ui-hooks@0.1.4",
-    "gwendall:jquery-animation-callback@0.1.1"
+    "gwendall:jquery-animation-callback@0.1.2"
   ], "client");
 
   api.addFiles([
