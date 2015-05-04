@@ -16,12 +16,13 @@ var animateIn = function(attrs, element, tpl) {
   var classIn = getClassIn(attrs, el, tpl);
   // Hide the element before inserting to avoid a flickering when applying the "in" class
   element._opacity = element._opacity || element.css("opacity") || 0;
-  element.css({ opacity: 0 });
+  element._transition = element._transition || element.css("transition") || "none";
+  element.css({ opacity: 0, transition: "none" });
   element.removeClass(classIn);
   var delayIn = attrs.delayIn || 0;
   Tracker.afterFlush(function() {
     setTimeout(function() {
-      element.css({ opacity: element._opacity }).addClass(classIn);
+      element.css({ opacity: element._opacity, transition: element._transition }).addClass(classIn);
     }, delayIn);
   });
 }
@@ -78,7 +79,8 @@ var animateInitialElements = function(tplName, animations) {
         var animateInitialStep = attrs.animateInitialStep * i || 0;
         var delay = animateInitialDelay + animateInitialStep;
         element._opacity = element.css("opacity");
-        element.css({ opacity: 0 });
+        element._transition = element.css("transition");
+        element.css({ opacity: 0, transition: "none" });
         setTimeout(function() {
           animateIn(attrs, element);
         }, delay);
