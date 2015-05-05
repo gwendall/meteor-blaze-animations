@@ -1,3 +1,9 @@
+Anim = {
+  insertedClass: "inserted",
+  insertingClass: "inserting",
+  removingClass: "removing"
+};
+
 var getTplName = function(tpl) {
   return tpl.viewName.slice(-(tpl.viewName.length - "Template.".length));
 }
@@ -22,7 +28,7 @@ var animateIn = function(attrs, element, tpl) {
   var delayIn = attrs.delayIn || 0;
   Tracker.afterFlush(function() {
     setTimeout(function() {
-      element.css({ opacity: element._opacity, transition: element._transition }).addClass(classIn);
+      element.css({ opacity: element._opacity, transition: element._transition }).addClass(classIn).addClass(Anim.insertingClass);
     }, delayIn);
   });
 }
@@ -33,7 +39,7 @@ var animateOut = function(attrs, element, tpl) {
   var classIn = getClassIn(attrs, el, tpl);
   var classOut = getClassOut(attrs, el, tpl);
   var delayOut = attrs.delayOut || 0;
-  element.removeClass(classIn);
+  element.removeClass(classIn).addClass(Anim.removingClass);
   setTimeout(function() {
     element.addClass(classOut);
   }, delayOut);
@@ -46,19 +52,18 @@ var attachAnimationCallbacks = function(attrs, selector, tpl) {
   if (callbacks[s]) return;
   callbacks[s] = true;
 
-  $(s).onAnimationOrTransitionEnd(function() {
+  $(s).onAnimationEnd(function() {
 
     var element = $(this);
 
     // Insert
-    var classIn = getClassIn(attrs, this, tpl);
-    if (element.hasClass(classIn)) {
+    if (element.hasClass(Anim.insertingClass)) {
+      element.removeClass(Anim.insertingClass).addClass(Anim.insertedClass);
       attrs.inCallback && attrs.inCallback.call(this);
     }
 
     // Remove
-    var classOut = getClassOut(attrs, this, tpl);
-    if (element.hasClass(classOut)) {
+    if (element.hasClass(Anim.removingClass)) {
       attrs.outCallback && attrs.outCallback.call(this);
       element.remove();
     }

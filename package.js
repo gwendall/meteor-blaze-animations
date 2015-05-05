@@ -2,7 +2,7 @@ Package.describe({
   name: "gwendall:template-animations",
   summary: "Simple DOM animations for Meteor",
   git: "https://github.com/gwendall/meteor-template-animations.git",
-  version: "0.1.9_3"
+  version: "0.1.9_4"
 });
 
 Package.onUse(function (api, where) {
@@ -19,5 +19,7 @@ Package.onUse(function (api, where) {
   api.addFiles([
     "lib.js",
   ], "client");
+
+  api.export("Anim", "client");
 
 });
