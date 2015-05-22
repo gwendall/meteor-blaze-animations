@@ -26,6 +26,7 @@ var animateIn = function(attrs, element, tpl) {
   element.css({ opacity: 0, transition: "none" });
   element.removeClass(classIn);
   var delayIn = attrs.delayIn || 0;
+  attrs.beforeIn && attrs.beforeIn.apply(this, [attrs, element, tpl]);
   Tracker.afterFlush(function() {
     setTimeout(function() {
       element.css({ opacity: element._opacity, transition: element._transition }).addClass(classIn).addClass(Anim.insertingClass);
@@ -40,6 +41,7 @@ var animateOut = function(attrs, element, tpl) {
   var classOut = getClassOut(attrs, el, tpl);
   var delayOut = attrs.delayOut || 0;
   element.removeClass(classIn).addClass(Anim.removingClass);
+  attrs.beforeOut && attrs.beforeOut.apply(this, [attrs, element, tpl]);
   setTimeout(function() {
     element.addClass(classOut);
   }, delayOut);
@@ -59,12 +61,20 @@ var attachAnimationCallbacks = function(attrs, selector, tpl) {
     // Insert
     if (element.hasClass(Anim.insertingClass)) {
       element.removeClass(Anim.insertingClass).addClass(Anim.insertedClass);
-      attrs.inCallback && attrs.inCallback.call(this);
+      if(attrs.inCallback) {
+        console.warn('inCallback is deprecated. Please use afterIn instead');
+        attrs.inCallback.call(this);
+      }
+      attrs.afterIn && attrs.afterIn.apply(this, [attrs, element, tpl]);
     }
 
     // Remove
     if (element.hasClass(Anim.removingClass)) {
-      attrs.outCallback && attrs.outCallback.call(this);
+      if(attrs.outCallback) {
+        console.warn('outCallback is deprecated. Please use afterOut instead');
+        attrs.outCallback.call(this);
+      }
+      attrs.afterOut && attrs.afterOut.apply(this, [attrs, element, tpl]);
       element.remove();
     }
 
