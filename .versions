@@ -5,7 +5,7 @@ deps@1.0.7
 ejson@1.0.6
 geojson-utils@1.0.3
 gwendall:jquery-animation-callback@0.1.2
-gwendall:template-animations@0.1.9_3
+gwendall:template-animations@0.1.9_4
 gwendall:ui-hooks@0.1.5
 html-tools@1.0.4
 htmljs@1.0.4

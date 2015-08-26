@@ -6,15 +6,15 @@ Anim = {
 
 var getTplName = function(tpl) {
   return tpl.viewName.slice(-(tpl.viewName.length - "Template.".length));
-}
+};
 
 var getClassIn = function(attrs, element, tpl) {
   return _.isFunction(attrs.in) ? attrs.in.apply(this, [element, tpl]) : attrs.in;
-}
+};
 
 var getClassOut = function(attrs, element, tpl) {
   return _.isFunction(attrs.out) ? attrs.out.apply(this, [element, tpl]) : attrs.out;
-}
+};
 
 var animateIn = function(attrs, element, tpl) {
   if (!attrs || !element) return;
@@ -31,7 +31,7 @@ var animateIn = function(attrs, element, tpl) {
       element.css({ opacity: element._opacity, transition: element._transition }).addClass(classIn).addClass(Anim.insertingClass);
     }, delayIn);
   });
-}
+};
 
 var animateOut = function(attrs, element, tpl) {
   if (!attrs || !element) return;
@@ -43,7 +43,7 @@ var animateOut = function(attrs, element, tpl) {
   setTimeout(function() {
     element.addClass(classOut);
   }, delayOut);
-}
+};
 
 var callbacks = {};
 var attachAnimationCallbacks = function(attrs, selector, tpl) {
@@ -92,7 +92,7 @@ var animateInitialElements = function(tplName, animations) {
       });
     });
   });
-}
+};
 
 var getUiHooks = function(animations) {
   var hooks = {};
@@ -100,9 +100,14 @@ var getUiHooks = function(animations) {
     hooks[selector] = {
       container: attrs.container,
       insert: function(node, next, tpl) {
-        var element = $(node);
-        element.insertBefore(next);
-        animateIn(attrs, element, tpl);
+        console.log('Animating element in.');
+        var $element = $(node);
+        if (next) {
+          $element.insertBefore(next);
+        } else {
+          $(attrs.container).append(node);
+        }
+        animateIn(attrs, $element, tpl);
         attachAnimationCallbacks(attrs, selector, tpl);
       },
       remove: function(node, tpl) {
@@ -111,10 +116,10 @@ var getUiHooks = function(animations) {
         animateOut(attrs, element, tpl);
         attachAnimationCallbacks(attrs, selector, tpl);
       }
-    }
+    };
   });
   return hooks;
-}
+};
 
 Template.prototype.animations = function(animations) {
   var tplName = getTplName(this);
