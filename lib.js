@@ -111,13 +111,12 @@ var getUiHooks = function(animations) {
       container: attrs.container,
       insert: function(node, next, tpl) {
         UiHooks.defaults.insert(node, next, attrs.container);
-        animateIn(attrs, $element, tpl);
+        animateIn(attrs, $(node), tpl);
         attachAnimationCallbacks(attrs, selector, tpl);
       },
       remove: function(node, tpl) {
-        var element = $(node);
         if (!attrs.out) return UiHooks.defaults.remove(node);
-        animateOut(attrs, element, tpl);
+        animateOut(attrs, $(node), tpl);
         attachAnimationCallbacks(attrs, selector, tpl);
       }
     };
