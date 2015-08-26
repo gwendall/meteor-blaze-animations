@@ -27,8 +27,10 @@ Template.layout.animations({
     container: ".container", // container of the ".item" elements
     in: "fade-in", // class applied to inserted elements
     out: "fade-out", // class applied to removed elements
-    inCallback: function(element) {}, // callback after an element gets inserted
-    outCallback: function(element) {}, // callback after an element gets removed
+    beforeIn: function(attrs, element, template) {}, // callback before the insert animation is triggered
+    beforeOut: function(attrs, element, template) {}, // callback before the remove animation is triggered
+    afterIn: function(attrs, element, template) {}, // callback after an element gets inserted
+    afterOut: function(attrs, element, template) {}, // callback after an element gets removed
     delayIn: 500, // Delay before inserted items animate
     delayOut: 500, // Delay before removed items animate
     animateInitial: true, // animate the elements already rendered
