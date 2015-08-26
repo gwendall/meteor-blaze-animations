@@ -1,11 +1,11 @@
 Anim = {
-  insertedClass: "inserted",
-  insertingClass: "inserting",
-  removingClass: "removing"
+  insertedClass: 'inserted',
+  insertingClass: 'inserting',
+  removingClass: 'removing'
 };
 
 var getTplName = function(tpl) {
-  return tpl.viewName.slice(-(tpl.viewName.length - "Template.".length));
+  return tpl.viewName.slice(-(tpl.viewName.length - 'Template.'.length));
 };
 
 var getClassIn = function(attrs, element, tpl) {
@@ -20,10 +20,10 @@ var animateIn = function(attrs, element, tpl) {
   if (!attrs || !element) return;
   var el = _.clone(element.get(0));
   var classIn = getClassIn(attrs, el, tpl);
-  // Hide the element before inserting to avoid a flickering when applying the "in" class
-  element._opacity = element._opacity || element.css("opacity") || 0;
-  element._transition = element._transition || element.css("transition") || "none";
-  element.css({ opacity: 0, transition: "none" });
+  // Hide the element before inserting to avoid a flickering when applying the 'in' class
+  element._opacity = element._opacity || element.css('opacity') || 0;
+  element._transition = element._transition || element.css('transition') || 'none';
+  element.css({ opacity: 0, transition: 'none' });
   element.removeClass(classIn);
   var delayIn = attrs.delayIn || 0;
   attrs.beforeIn && attrs.beforeIn.apply(this, [attrs, element, tpl]);
@@ -50,7 +50,7 @@ var animateOut = function(attrs, element, tpl) {
 var callbacks = {};
 var attachAnimationCallbacks = function(attrs, selector, tpl) {
 
-  var s = _.compact([attrs.container, selector]).join(" ");
+  var s = _.compact([attrs.container, selector]).join(' ');
   if (callbacks[s]) return;
   callbacks[s] = true;
 
@@ -93,9 +93,9 @@ var animateInitialElements = function(tplName, animations) {
         var element = $(this);
         var animateInitialStep = attrs.animateInitialStep * i || 0;
         var delay = animateInitialDelay + animateInitialStep;
-        element._opacity = element.css("opacity");
-        element._transition = element.css("transition");
-        element.css({ opacity: 0, transition: "none" });
+        element._opacity = element.css('opacity');
+        element._transition = element.css('transition');
+        element.css({ opacity: 0, transition: 'none' });
         setTimeout(function() {
           animateIn(attrs, element);
         }, delay);
@@ -110,18 +110,13 @@ var getUiHooks = function(animations) {
     hooks[selector] = {
       container: attrs.container,
       insert: function(node, next, tpl) {
-        var $element = $(node);
-        if (next) {
-          $element.insertBefore(next);
-        } else {
-          $(attrs.container).append(node);
-        }
+        UiHooks.defaults.insert(node, next, attrs.container);
         animateIn(attrs, $element, tpl);
         attachAnimationCallbacks(attrs, selector, tpl);
       },
       remove: function(node, tpl) {
         var element = $(node);
-        if (!attrs.out) return element.remove();
+        if (!attrs.out) return UiHooks.defaults.remove(node);
         animateOut(attrs, element, tpl);
         attachAnimationCallbacks(attrs, selector, tpl);
       }
