@@ -110,7 +110,6 @@ var getUiHooks = function(animations) {
     hooks[selector] = {
       container: attrs.container,
       insert: function(node, next, tpl) {
-        console.log('Animating element in.');
         var $element = $(node);
         if (next) {
           $element.insertBefore(next);
