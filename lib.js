@@ -8,43 +8,68 @@ var getTplName = function(tpl) {
   return tpl.viewName.slice(-(tpl.viewName.length - 'Template.'.length));
 };
 
-var getClassIn = function(attrs, element, tpl) {
-  return _.isFunction(attrs.in) ? attrs.in.apply(this, [element, tpl]) : attrs.in;
+var getClassInserted = function(attrs, element, tpl) {
+  var classInserted = attrs.insert.class || attrs.in;
+  if (attrs.in) {
+    console.warn('"in" is deprecated. Please use "insert.class" instead.');
+  }
+  return _.isFunction(classInserted) ? classInserted.apply(this, [element, tpl]) : classInserted;
 };
 
-var getClassOut = function(attrs, element, tpl) {
-  return _.isFunction(attrs.out) ? attrs.out.apply(this, [element, tpl]) : attrs.out;
+var getClassRemoved = function(attrs, element, tpl) {
+  var classRemoved = attrs.remove.class || attrs.out;
+  if (attrs.out) {
+    console.warn('"out" is deprecated. Please use "remove.class" instead.');
+  }
+  return _.isFunction(classRemoved) ? classRemoved.apply(this, [element, tpl]) : classRemoved;
 };
 
-var animateIn = function(attrs, element, tpl) {
+var animateInserted = function(attrs, element, tpl) {
   if (!attrs || !element) return;
   var el = _.clone(element.get(0));
-  var classIn = getClassIn(attrs, el, tpl);
+  var classInserted = getClassInserted(attrs, el, tpl);
   // Hide the element before inserting to avoid a flickering when applying the 'in' class
   element._opacity = element._opacity || element.css('opacity') || 0;
   element._transition = element._transition || element.css('transition') || 'none';
   element.css({ opacity: 0, transition: 'none' });
-  element.removeClass(classIn);
-  var delayIn = attrs.delayIn || 0;
-  attrs.beforeIn && attrs.beforeIn.apply(this, [attrs, element, tpl]);
+  element.removeClass(classInserted);
+  var delayInserted = attrs.insert.delay || attrs.delayIn || 0;
+  if (attrs.delayIn) {
+    console.warn('"delayIn" is deprecated. Please use "insert.delay" instead.');
+  }
+  var beforeInserted = attrs.insert.before || attrs.beforeIn;
+  if (attrs.beforeIn) {
+    console.warn('"beforeIn" is deprecated. Please use "insert.before" instead.');
+  }
+  beforeInserted && beforeInserted.apply && beforeInserted.apply(this, [attrs, element, tpl]);
   Tracker.afterFlush(function() {
     setTimeout(function() {
-      element.css({ opacity: element._opacity, transition: element._transition }).addClass(classIn).addClass(Anim.insertingClass);
-    }, delayIn);
+      element.css({ opacity: element._opacity, transition: element._transition }).addClass(classInserted).addClass(Anim.insertingClass);
+    }, delayInserted);
   });
 };
 
-var animateOut = function(attrs, element, tpl) {
+var animateRemoved = function(attrs, element, tpl) {
   if (!attrs || !element) return;
   var el = _.clone(element.get(0));
-  var classIn = getClassIn(attrs, el, tpl);
-  var classOut = getClassOut(attrs, el, tpl);
-  var delayOut = attrs.delayOut || 0;
-  element.removeClass(classIn).addClass(Anim.removingClass);
-  attrs.beforeOut && attrs.beforeOut.apply(this, [attrs, element, tpl]);
+  var classInserted = getClassInserted(attrs, el, tpl);
+  var classRemoved = getClassRemoved(attrs, el, tpl);
+
+  var delayRemoved = attrs.remove.delay || attrs.delayOut || 0;
+  if (attrs.delayOut) {
+    console.warn('"delayOut" is deprecated. Please use "remove.delay" instead.');
+  }
+  var beforeRemoved = attrs.remove.before || attrs.beforeOut;
+  if (attrs.beforeOut) {
+    console.warn('"beforeOut" is deprecated. Please use "remove.before" instead.');
+  }
+  beforeRemoved && beforeRemoved.apply && beforeRemoved.apply(this, [attrs, element, tpl]);
+
+  element.removeClass(classInserted).addClass(Anim.removingClass);
   setTimeout(function() {
-    element.addClass(classOut);
-  }, delayOut);
+    element.addClass(classRemoved);
+  }, delayRemoved);
+
 };
 
 var callbacks = {};
@@ -60,22 +85,32 @@ var attachAnimationCallbacks = function(attrs, selector, tpl) {
 
     // Insert
     if (element.hasClass(Anim.insertingClass)) {
-      element.removeClass(Anim.insertingClass).addClass(Anim.insertedClass);
-      if(attrs.inCallback) {
-        console.warn('inCallback is deprecated. Please use afterIn instead');
-        attrs.inCallback.call(this);
+
+      var afterInserted = attrs.insert.after || attrs.afterIn || attrs.inCallback;
+      if (attrs.afterIn) {
+        console.warn('"afterIn" is deprecated. Please use "insert.after" instead.');
       }
-      attrs.afterIn && attrs.afterIn.apply(this, [attrs, element, tpl]);
+      if (attrs.inCallback) {
+        console.warn('"inCallback" is deprecated. Please use "insert.after" instead.');
+      }
+      afterInserted && afterInserted.apply && afterInserted.apply(this, [attrs, element, tpl]);
+      element.removeClass(Anim.insertingClass).addClass(Anim.insertedClass);
+
     }
 
     // Remove
     if (element.hasClass(Anim.removingClass)) {
-      if(attrs.outCallback) {
-        console.warn('outCallback is deprecated. Please use afterOut instead');
-        attrs.outCallback.call(this);
+
+      var afterRemoved = attrs.remove.after || attrs.afterOut || attrs.outCallback;
+      if (attrs.afterOut) {
+        console.warn('"afterOut" is deprecated. Please use "remove.after" instead.');
       }
-      attrs.afterOut && attrs.afterOut.apply(this, [attrs, element, tpl]);
+      if (attrs.outCallback) {
+        console.warn('"outCallback" is deprecated. Please use "remove.after" instead.');
+      }
+      afterRemoved && afterRemoved.apply && afterRemoved.apply(this, [attrs, element, tpl]);
       element.remove();
+
     }
 
   });
@@ -97,7 +132,7 @@ var animateInitialElements = function(tplName, animations) {
         element._transition = element.css('transition');
         element.css({ opacity: 0, transition: 'none' });
         setTimeout(function() {
-          animateIn(attrs, element);
+          animateInserted(attrs, element);
         }, delay);
       });
     });
@@ -107,16 +142,18 @@ var animateInitialElements = function(tplName, animations) {
 var getUiHooks = function(animations) {
   var hooks = {};
   _.each(animations, function(attrs, selector) {
+    attrs.insert = attrs.insert || {};
+    attrs.remove = attrs.remove || {};
     hooks[selector] = {
       container: attrs.container,
       insert: function(node, next, tpl) {
         UiHooks.defaults.insert(node, next, attrs.container);
-        animateIn(attrs, $(node), tpl);
+        animateInserted(attrs, $(node), tpl);
         attachAnimationCallbacks(attrs, selector, tpl);
       },
       remove: function(node, tpl) {
         if (!attrs.out) return UiHooks.defaults.remove(node);
-        animateOut(attrs, $(node), tpl);
+        animateRemoved(attrs, $(node), tpl);
         attachAnimationCallbacks(attrs, selector, tpl);
       }
     };
