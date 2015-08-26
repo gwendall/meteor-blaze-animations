@@ -142,6 +142,7 @@ var animateInitialElements = function(tplName, animations) {
 var getUiHooks = function(animations) {
   var hooks = {};
   _.each(animations, function(attrs, selector) {
+    attrs = attrs || {};
     attrs.insert = attrs.insert || {};
     attrs.remove = attrs.remove || {};
     hooks[selector] = {
@@ -152,7 +153,8 @@ var getUiHooks = function(animations) {
         attachAnimationCallbacks(attrs, selector, tpl);
       },
       remove: function(node, tpl) {
-        if (!attrs.out) return UiHooks.defaults.remove(node);
+        var classRemoved = getClassRemoved(attrs, $(node), tpl);
+        if (!classRemoved) return UiHooks.defaults.remove(node);
         animateRemoved(attrs, $(node), tpl);
         attachAnimationCallbacks(attrs, selector, tpl);
       }
